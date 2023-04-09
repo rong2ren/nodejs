@@ -30,6 +30,7 @@
     function searchBooks() {
       // Get user input from the form
       var userInput = $('#prompt').val();
+      $('#bookListContainer').empty(); // Clear existing content
       $('#statusContainer').html("Got your request. Checking...");
       // Make AJAX request to the server
       $.ajax({
@@ -55,27 +56,21 @@
     // Function to update book list container with book data
     function updateBookList(books) {
       const bookListContainer = $('#bookListContainer');
-      bookListContainer.empty(); // Clear existing content
-
-      for (i = 0; i< books.length; i++) {
-          var book =  books[i];
-          console.log(book.name);
-          console.log(book.coverUrl);
-      }
-
       if (books && books.length > 0) {
-         const bookListHTML = `
-          <ul>
-            <% for (const book of books) { %>
-              <li>
-                <img src="<%= book.coverUrl %>" alt="<%= book.name %> Cover">
-                <h3><%= book.name %></h3>
-              </li>
-            <% } %>
-          </ul>
-        `;
-        console.log(bookListHTML);
-        bookListContainer.html(bookListHTML);
+        for (i = 0; i< books.length; i++) {
+            var book =  books[i];
+            
+            var bookLI = document.createElement('li');
+
+            $('<img />',
+              { id: 'test',
+                src: book.coverUrl
+              })
+                .appendTo(bookLI);
+            bookLI.append(book.name);
+
+            bookListContainer.append(bookLI);
+        }
       } else {
         // Render empty book list message if no books found
         bookListContainer.html('<p>No books found</p>');
