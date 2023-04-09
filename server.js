@@ -10,12 +10,9 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 // Define the route for the home page
-
 app.get("/", (req, res) => {
     res.render("index", { books: [], userInput: "" });
-    //res.render("index");
   });
-
 
 // Route for handling the form submission
 app.post('/search', async (req, res) => {
@@ -25,12 +22,8 @@ app.post('/search', async (req, res) => {
         return res.status(400).json({ error: 'userInput is required.' });
       }
     const books = await searchBook(userInput); // Call the searchBook function from book_search.js
-    // Render the index.ejs template with the books array -> I am no longer render the whole page since i changed it to AJAX
-    //res.render('index', { books: books, userInput: userInput });
-    res.json([{
-        books: books,
-        userInput: userInput
-     }])
+    // Render the index.ejs template with the books array
+    res.render('index', { books: books, userInput: userInput });
     
   } catch (error) {
     if (error.response) {
