@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Book Recommendations</title>
+    <style>
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      img {
+        width: 100px;
+        height: auto;
+        margin-right: 1rem;
+      }
+      h3 {
+        margin: 0;
+      }
+    </style>
+    <!-- Add jQuery library (you can download it from https://jquery.com/) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <script>
+    // Function to handle form submission
+    function searchBooks() {
+      // Get user input from the form
+      var userInput = $('#prompt').val();
+      $('#statusContainer').html("Got your request. Checking...");
+      // Make AJAX request to the server
+      $.ajax({
+        url: '/search',
+        method: 'POST',
+        data: { prompt: userInput },
+        success: function(data) {
+          // Update the book list with the returned data
+          //$('#bookListContainer').html(data.length);
+          //console.log(data);
+          if(data && data.length > 0 ){
+            //console.log(data[0].books);
+            $('#statusContainer').html("Result: " + data[0].userInput);
+            updateBookList(data[0].books);
+          } 
+        }
+      });
+      
+      // Prevent form submission
+      return false;
+    }
+
+    // Function to update book list container with book data
+    function updateBookList(books) {
+      const bookListContainer = $('#bookListContainer');
+      bookListContainer.empty(); // Clear existing content
+
+      for (i = 0; i< books.length; i++) {
+          var book =  books[i];
+          console.log(book.name);
+          console.log(book.coverUrl);
+      }
+
+      if (books && books.length > 0) {
+         const bookListHTML = `
+          <ul>
+            <% for (const book of books) { %>
+              <li>
+                <img src="<%= book.coverUrl %>" alt="<%= book.name %> Cover">
+                <h3><%= book.name %></h3>
+              </li>
+            <% } %>
+          </ul>
+        `;
+        console.log(bookListHTML);
+        bookListContainer.html(bookListHTML);
+      } else {
+        // Render empty book list message if no books found
+        bookListContainer.html('<p>No books found</p>');
+      }
+    }
+  </script>
+  
+  </head>
+  <body>
+    <h1>Book Recommendations</h1>
+    <form id="searchForm" onsubmit="return searchBooks();">
+      <label for="prompt">I want to read:</label>
+      <input type="text" id="prompt" name="prompt" required>
+      <button type="submit">Search</button>
+    </form>
+    <div id="statusContainer">
+      
+    </div>
+    <div id="bookListContainer">
+      <!-- Book list will be displayed here dynamically using AJAX -->
+    </div>
+  </body>
+</html>

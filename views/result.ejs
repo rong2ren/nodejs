@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Book Recommendations</title>
+  </head>
+  <body>
+    <h1>Book Recommendations</h1>
+    <% if (books.length > 0) { %>
+      <ul>
+        <% books.forEach((book, index) => { %>
+          <li><%= `${index + 1}: ${book.N} by ${book.A}` %></li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No book recommendations found.</p>
+    <% } %>
+  </body>
+</html>
