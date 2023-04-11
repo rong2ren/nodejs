@@ -12,15 +12,26 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-async function getBookDetailFromOL(bookName){
+
+async function openlibary_search(bookName){
   // Fetch book information results from Open Library API
-  console.log(`https://openlibrary.org/search.json?title=${bookName}`);
-  const openLibraryResponse = await fetch(`https://openlibrary.org/search.json?title=${bookName}`);
+  const url = `https://openlibrary.org/search.json?q=${bookName}`;
+  
+  console.log(`https://openlibrary.org/search.json?q=${bookName}`);
+  const openLibraryResponse = await fetch(`https://openlibrary.org/search.json?q=${bookName}`);
   if (!openLibraryResponse.ok) {
-    throw new Error('Failed to fetch books from Open Library API for book: ' + bookName);
+    throw new Error(`Failed to fetch books from Open Library API: ${response.status} ${response.statusText}`);
   }
   const openLibraryData = await openLibraryResponse.json();
-  const coverID = openLibraryData.docs[0]?.cover_i || null;
+  let coverID = null;
+  for(var i = 0; i < openLibraryData.numFound; i++){
+    if(openLibraryData.docs[i].cover_i) {
+      coverID = openLibraryData.docs[i].cover_i;
+      console.log("used " + i + " for book:" + bookName);
+      break;
+    }
+  }
+  //const coverID = openLibraryData.docs[0].cover_i || null;
   //const olid = book.key.replace('/works/', '');
   return coverID;
 }
@@ -29,12 +40,10 @@ async function getBookDetailFromOL(bookName){
 async function searchBook(userInput) {
     //console.log("ask open ai to search for book recommendations by user request: " + userInput);
     const responseFormat = `
-    Return result in this format:
-    book name 1 $ book author 1
-    book name 2 $ book author 2
-    ...
+    Return the result in this format: Each book is one line. And each line is formatted as Book name $ Book author.
     `;
-    const prompt = `Generate book recommendations based on the following input: ${userInput}. ${responseFormat}`;
+    const prompt = `You are an expert for books. Generate books recommendations based on the user's input: "${userInput}". ${responseFormat}`;
+    console.log(prompt);
     const completion = await openai.createCompletion({
         model: "text-davinci-003",
         prompt: prompt,
@@ -42,7 +51,6 @@ async function searchBook(userInput) {
         temperature: 0.5,
       });
     const responseString = completion.data.choices[0].text.trim();
-
     // Split the response by line breaks
     const responseLines = responseString.split('\n');
     // Process each line to extract book names and authors
@@ -51,10 +59,10 @@ async function searchBook(userInput) {
         // Split the line by the delimiter to extract book name and author
         const book = line.split('$');
         // Ensure that the line has the expected number of parts (i.e., book name and author)
-        if (book.length === 2) {
+        if (book.length >= 2) {
           const name = book[0].trim();
           const author = book[1].trim();
-          const coverID = await getBookDetailFromOL(name); // Fetch coverID concurrently
+          const coverID = await openlibary_search(name); // Fetch coverID concurrently
           console.log(`Name: ${name}, Author: ${author}, ID: ${coverID}`);
           return { name: name, author: author, coverUrl: `https://covers.openlibrary.org/b/id/${coverID}-M.jpg` };
         } else {
@@ -63,7 +71,7 @@ async function searchBook(userInput) {
           return null;
         }
       } catch (error) {
-        console.error('Failed to process book:', error);
+        console.error('Failed to process:', error);
         return null;
       }
     });

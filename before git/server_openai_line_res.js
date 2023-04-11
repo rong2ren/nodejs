@@ -5,7 +5,7 @@ const { searchBook } = require('./book_search'); // Import the searchBook functi
 
 // Set up the Express app
 const app = express();
-app.use(express.urlencoded({ extended: true }));
+//app.use(express.urlencoded({ extended: true }));
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
 
@@ -13,6 +13,14 @@ app.set('view engine', 'ejs');
 app.get("/", (req, res) => {
     res.render("index", { books: [], userInput: "" });
   });
+  /*
+// Serve static files from the "bazam" directory
+app.use(express.static(__dirname + '/bazam'));
+app.get("/bazam", (req, res) => {
+    // Use res.sendFile() to send the "index.html" file in the "bazam" folder as the response
+    res.sendFile(__dirname + "/bazam/index.html");
+  });
+  */
 
 // Route for handling the form submission
 app.post('/search', async (req, res) => {

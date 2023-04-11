@@ -12,12 +12,11 @@ app.set('view engine', 'ejs');
 // Define the route for the home page
 
 app.get("/", (req, res) => {
-    res.render("index", { books: [], userInput: "" });
-    //res.render("index");
+    res.render("index");
   });
 
 
-// Route for handling the form submission
+// Route for handling search - form submission
 app.post('/search', async (req, res) => {
   try {
     const userInput = req.body.prompt.trim(); // use the user's text input, for example 'mystery novels'
