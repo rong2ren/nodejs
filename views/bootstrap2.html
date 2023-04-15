@@ -13,83 +13,97 @@
 </head>
   <body>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <nav class="navbar navbar-expand-lg navbar-light bg-success">
-                    <a class="navbar-brand" href="#">PageTurn AI</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">About</a>
-                        </li>
-                      </ul>
+
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img
+                      src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+                      class="me-2"
+                      height="20"
+                      alt="PageTurn AI Logo"
+                      loading="lazy"
+                    />
+                    <small>PageTurn AI</small>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                      <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                      </li>
+                    </ul>
+                  </div>
+            </div>
+          </nav>
+        
+        <!-- Search form -->
+        <div class="jumbotron text-center">
+            <h1 class="display-5">Don't know what to read?</h1>
+            <p class="lead">Ask PageTurn AI to give your book recommendations!</p>
+            <form action="javascript:void(0);"> 
+                <div class="form-row text-center">                             
+                    <div class="col-md-11 ">
+                        <input type="text" class="form-control" id="userInput" name="userInput">
+                    
                     </div>
-                  </nav>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="jumbotron">
-                    
-                        <h1 class="display-5">Don't know what to read?</h1>
-                        <p class="lead">Ask PageTurn AI to give your book recommendations!</p>
-                        <form action="javascript:void(0);"> 
-                            <div class="form-row mx-5">                             
-                                <div class="col-md-11 ">
-                                    <input type="text" class="form-control" id="userInput" name="userInput">
-                                
-                                </div>
-                                <div class="col-md-1">
-                                    <button type="submit" class="btn btn-outline-success">Search</button>
-                                </div>
-                                <div class="col-12">
-                                    <small id="userInputHelp" class="form-text text-muted">For example: for 9 years old boy who loves Harry Potter.</small>
-                                </div>
-                            </div>
-                        </form>
-                        
-                    
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-outline-success">Search</button>
+                    </div>
+                    <div class="col-12">
+                        <small id="userInputHelp" class="form-text text-muted">For example: for 9 years old boy who loves Harry Potter.</small>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
+
+        <!-- Result: book list -->
         <div class="row">
             <div class="col-2">
-                <img class="img-thumbnail" src="https://covers.openlibrary.org/b/id/9327917-M.jpg">
+                <img class="img-thumbnail img-fluid"  src="https://covers.openlibrary.org/b/id/9327917-M.jpg">
             </div>
             <div class="col-10 list-group">
                 <a href="#" class="list-group-item list-group-item-action list-group-item-secondary flex-column">Harry Potter and the Philosopher's Stone</a>
                 <li class="list-group-item">The first book in the beloved Harry Potter series, introducing readers to the magical world of Hogwarts and the young wizard Harry Potter.</li>
             </div>
         </div>
-
-        <div class="row col-12">
-            <table class="table table-hover">
-                <tbody>
-                    <tr>
-                        <td>
-                            <img class="img-thumbnail" src="https://covers.openlibrary.org/b/id/9327917-M.jpg">
-                        </td>
-                        <td>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item list-group-item-dark"><h5 class="mb-1">Harry Potter and the Philosopher's Stone</h5></li>
-                                <li class="list-group-item">The first book in the beloved Harry Potter series, introducing readers to the magical world of Hogwarts and the young wizard Harry Potter.</li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
+        
         
 
-          
+        <!-- Test -->
+        <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+              <tr>
+                <th>Name</th>
+                <th>Title</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img
+                        src="https://covers.openlibrary.org/b/id/9327917-M.jpg"
+                        alt=""
+                        style="width: 90px"
+                        />
+                  </div>
+                </td>
+                <td colspan="4">
+                  <p class="fw-bold mb-1">Harry Potter and the Philosopher's Stone</p>
+                  <p class="text-muted mb-0">The first book in the beloved Harry Potter series, introducing readers to the magical world of Hogwarts and the young wizard Harry Potter.</p>
+                </td>
+              </tr>
+              
+              
+            </tbody>
+          </table>
 
     </div>
   </body>
