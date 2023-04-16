@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 // Route for handling search - form submission
 app.post('/search', async (req, res) => {
   try {
+    console.log("got /search post request");
     const userInput = req.body.prompt.trim(); // use the user's text input, for example 'mystery novels'
     if (!userInput) {
         return res.status(400).json({ error: 'userInput is required.' });
