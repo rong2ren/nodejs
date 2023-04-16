@@ -70,7 +70,13 @@
         
         <!-- Result: book list -->
         <div class="container">
-            <h4 class="text-center mt-5">Results for: Harry Potter</h4>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            <button class="btn btn-outline-success" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
+            <h4 class="text-center my-5">Results for: Harry Potter</h4>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
               
                 <!-- one book -->
@@ -132,52 +138,12 @@
             </div>
         </div>
 
-
-
-        
-        
-
         <!-- Test -->
         
 
 
-
-
-
-
-
-
-        <div class="container-fluid text-center bg-grey">
-            <h4>Result for Harry Potter</h4>
-            <div class="text-center row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
-                
-              <div class="col-sm-4 rounded border py-3">
-                <div class="thumbnail">
-                  <img src="https://covers.openlibrary.org/b/id/9327917-M.jpg" alt="Paris">
-                  <p><strong>Harry Potter and the Philosopher's Stone</strong></p>
-                  <p>The first book in the beloved Harry Potter series, introducing readers to the magical world of Hogwarts and the young wizard Harry Potter. xxxxxxxxxxxxxxxxxxxxx</p>
-                </div>
-              </div>
-              <div class="col-sm-4 rounded border py-3">
-                <div class="thumbnail">
-                  <img src="https://covers.openlibrary.org/b/id/9327917-M.jpg" alt="New York">
-                  <p><strong>Harry Potter and the Philosopher's Stone</strong></p>
-                  <p>The first book in the beloved Harry Potter series, introducing readers to the magical world of Hogwarts and the young wizard Harry Potter.</p>
-                </div>
-              </div>
-              <div class="col-sm-4 rounded border py-3">
-                <div class="thumbnail">
-                  <img src="https://covers.openlibrary.org/b/id/9327917-M.jpg" alt="San Francisco">
-                  <p><strong>Harry Potter and the Philosopher's Stone</strong></p>
-                  <p>The first book in the beloved Harry Potter series.</p>
-                </div>
-              </div>
-          </div>
-
-
         <!-- Copyright -->
-        <footer class="bg-light text-center text-lg-start">
-            
+        <footer class="bg-light text-center text-lg-start my-5">
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
               © 2020 Copyright:
               <a class="text-dark" href="https://mdbootstrap.com/">PageTurn AI</a>
