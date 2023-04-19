@@ -12,12 +12,23 @@ app.set('view engine', 'ejs');
 // Define the route for the home page
 
 app.get("/", (req, res) => {
-    //res.render("index");
-    res.sendFile('index.html', { root: __dirname + '/public' });
+  /*
+    //1. below code shows the way to handle request with index.ejs and search.ejs(these 2 ejs are same as index.html and search.html, it didnt use dynamic ejs)
+    //not used anymore since sendFile will be faster for static html
+    res.render("index");
+  */
+    
+    //2. below code shows the way to handle request with index.html and search.html
+    //res.sendFile('index.html', { root: __dirname + '/public' });
+
+    //3. below code shows the way to handle request with main.ejs (use dynamic ejs to render different html base on the display)
+    res.render('main', { display: "big" });
   });
 
 app.get('/recommend', (req, res) => {
     /*
+    //below code shows the way to handle request with index.ejs and search.ejs(these 2 ejs are same as index.html and search.html, it didnt use dynamic ejs)
+    //not used anymore since sendFile will be faster for static html
     if (req.query.hasOwnProperty('prompt')){
       const userInput = req.query.prompt.trim(); // use the user's text input, for example 'mystery novels'
       res.render('search', { prompt: userInput });
@@ -25,13 +36,17 @@ app.get('/recommend', (req, res) => {
       res.render('search');
     }
     */
-    res.sendFile('search.html', { root: __dirname + '/public' });
+
+    //2. below code shows the way to handle request with index.html and search.html
+    //res.sendFile('search.html', { root: __dirname + '/public' });
+
+    //3. below code shows the way to handle request with main.ejs (use dynamic ejs to render different html base on the display)
+    res.render('main', { display: "small" });
   });
 
 // Route for handling search - form submission
 app.post('/search', async (req, res) => {
   try {
-    
     const userInput = req.body.prompt.trim(); // use the user's text input, for example 'mystery novels'
     if (!userInput) {
         return res.status(400).json({ error: 'userInput is required.' });
