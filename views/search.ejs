@@ -19,7 +19,7 @@
       function searchBooks() {
           // Get user input from the form
           if ($('#prompt').val().trim() === '') {
-              console.log("user input is empty");
+              console.log("error: user input is empty!");
           } else { 
               var userInput= $('#prompt').val();
               searchBooksByUserInput(userInput); 
@@ -29,7 +29,6 @@
       }
         
       function searchBooksByUserInput(userInput) {
-        
         $('#statusContainer').html('Got your request. Checking <i class="fas fa-circle-notch fa-spin"></i>');
         $('#bookListContainer').empty(); // Clear existing content
 
@@ -51,7 +50,7 @@
               //console.log(data[0].books);
               $('#mySubmitButton').html('<i class="fas fa-search"></i>'); // Change text back to "Search"
               $('#mySubmitButton').prop('disabled', false); // Enable the submit button
-              $('#prompt').attr("placeholder", "Type a prompt for search");
+              $('#prompt').attr("placeholder", "Type a search prompt");
               $('#prompt').prop("disabled", false); // enable the search text input
               $('#statusContainer').html("Result for: " + data[0].userInput);
               updateBookList(data[0].books);
@@ -83,7 +82,7 @@
                 var bookCard = $('<div class="col">' +
                       '<div class="card pt-3 h-100">' +
                         '<a class="ripple mx-auto" href="#!">' +
-                          '<img loading="lazy" alt="example" class="card-img-top img-fluid" src="' + book.coverUrl + '" style="max-width: 150px;">' +
+                          '<img loading="lazy" alt="' + book.name + ' cover" class="card-img-top img-fluid" src="' + book.coverUrl + '" style="max-width: 150px;">' +
                         '</a>' +
                         '<div class="card-body">' +
                           '<p class="card-title text-center"><strong>' + book.name + '</strong></p>' +
@@ -149,12 +148,14 @@
             <button type="submit" class="btn btn-outline-secondary my-2 mx-2 border-0 rounded-pill px-4"><i class="fas fa-search"></i></button>
           </form>
           -->
-          <div class="input-group flex-grow-1">
-              <input class="form-control border-0 bg-light rounded-pill" type="search" placeholder="Search" aria-label="Search" id="prompt" name="prompt" required>
-              <div class="input-group-append">
-                  <button class="btn btn-outline-secondary border-0 rounded-pill px-2" type="submit" id="mySubmitButton" aria-label="Search"><i class="fas fa-search"></i></button>
-              </div>
-          </div>
+          <form class="form-inline">
+            <div class="input-group flex-grow-1">
+                <input class="form-control border-0 bg-light rounded-pill" type="search" placeholder="Search" aria-label="Search" id="prompt" name="prompt" required>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary border-0 rounded-pill px-2" type="submit" id="mySubmitButton" aria-label="Search"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+          </form>
         </div>
         <div class="collapse navbar-collapse mr-auto" id="navbarNav2">
           <ul class="navbar-nav">
@@ -181,7 +182,7 @@
             <div class="card pt-3 h-100">
                 <a class="ripple mx-auto" href="#!">
                     <img
-                      alt="example"
+                      alt=""
                       class="card-img-top img-fluid"
                       src="https://covers.openlibrary.org/b/id/9327917-M.jpg"
                       style="max-width: 150px;"
