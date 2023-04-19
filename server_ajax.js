@@ -15,6 +15,16 @@ app.get("/", (req, res) => {
     res.render("index");
   });
 
+app.get('/recommend', (req, res) => {
+    //console.log(req.query);
+    if (req.query.hasOwnProperty('prompt')){
+      const userInput = req.query.prompt.trim(); // use the user's text input, for example 'mystery novels'
+      res.render('search', { prompt: userInput });
+    } else {
+      res.render('search');
+    }
+    
+  });
 
 // Route for handling search - form submission
 app.post('/search', async (req, res) => {
