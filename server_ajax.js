@@ -8,10 +8,16 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
+// Enable compression for all responses
+//app.use(compression());
+
+// Serve static files with caching
+//app.use(express.static('public', { maxAge: 86400000 }));
+app.use(express.static('public'));
 
 // Define the route for the home page
-
 app.get("/", (req, res) => {
+  console.log("/ request");
   /*
     //1. below code shows the way to handle request with index.ejs and search.ejs(these 2 ejs are same as index.html and search.html, it didnt use dynamic ejs)
     //not used anymore since sendFile will be faster for static html
@@ -19,13 +25,14 @@ app.get("/", (req, res) => {
   */
     
     //2. below code shows the way to handle request with index.html and search.html
-    //res.sendFile('index.html', { root: __dirname + '/public' });
+    res.sendFile('index.html', { root: __dirname + '/public' });
 
     //3. below code shows the way to handle request with main.ejs (use dynamic ejs to render different html base on the display)
-    res.render('main', { display: "big" });
+    //res.render('main', { display: "big" });
   });
 
 app.get('/recommend', (req, res) => {
+  console.log("/recommend request");
     /*
     //below code shows the way to handle request with index.ejs and search.ejs(these 2 ejs are same as index.html and search.html, it didnt use dynamic ejs)
     //not used anymore since sendFile will be faster for static html
@@ -38,10 +45,10 @@ app.get('/recommend', (req, res) => {
     */
 
     //2. below code shows the way to handle request with index.html and search.html
-    //res.sendFile('search.html', { root: __dirname + '/public' });
+    res.sendFile('search.html', { root: __dirname + '/public' });
 
     //3. below code shows the way to handle request with main.ejs (use dynamic ejs to render different html base on the display)
-    res.render('main', { display: "small" });
+    //res.render('main', { display: "small" });
   });
 
 // Route for handling search - form submission
