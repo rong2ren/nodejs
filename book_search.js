@@ -18,12 +18,11 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-
 async function openlibary_search(bookName, author){
   // Fetch book information results from Open Library API
   const url = `https://openlibrary.org/search.json?author=${author}&q=${bookName}`;
   
-  console.log(url);
+  //console.log(url);
   const openLibraryResponse = await fetch(url);
   if (!openLibraryResponse.ok) {
     console.error(`Failed to fetch books from Open Library API: ${openLibraryResponse.status} ${openLibraryResponse.data}`);
@@ -69,7 +68,7 @@ Return the results in the following format: Each book is on one line, and each l
         content: `Generate books recommendations based on the user input: "${userInput}". ${responseFormat}`, 
       },
     ];
-    
+    console.log(`Send request to ChatGPT API...`);
     const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: GPT35TurboMessage,
@@ -82,7 +81,7 @@ Return the results in the following format: Each book is on one line, and each l
     const responseLines = responseString.split(/\r?\n/).filter(line => line.trim() !== '');//remove empty lines
     //console.log(responseLines);
     // Process each line to extract book names and authors
-    console.log(`book recommendation base on: ${userInput}`);
+    console.log(`ChatGPT API returned! Start processing list of books...`);
     const bookPromises = responseLines.map(async (line) => {
       try {
         // Split the line by the delimiter to extract book name and author
@@ -96,7 +95,14 @@ Return the results in the following format: Each book is on one line, and each l
           const description = book[2].trim();
           
           console.log(`Name: ${name}, Author: ${author}, ID: ${coverID}`);
-          return {name: name, author: author, coverUrl: `https://covers.openlibrary.org/b/id/${coverID}-M.jpg`, description: description};
+          
+          var coverUrl;
+          if (coverID === null || coverID === undefined) {
+            coverUrl = ''
+          } else {
+            coverUrl = `https://covers.openlibrary.org/b/id/${coverID}-M.jpg`;
+          }
+          return {name: name, author: author, coverUrl: coverUrl, description: description};
         } else {
           // incomplete or malformed line
           //console.error('Incomplete or malformed line from OpenAI API:', book.length);

@@ -7,7 +7,7 @@ const { searchBook } = require('./book_search'); // Import the searchBook functi
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 // Set the view engine to EJS
-app.set('view engine', 'ejs');
+//app.set('view engine', 'ejs');
 // Enable compression for all responses
 //app.use(compression());
 
@@ -79,6 +79,6 @@ app.post('/search', async (req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server is running on port http://localhost:${port}`));
 
