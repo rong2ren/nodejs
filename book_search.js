@@ -1,22 +1,5 @@
-/*
-The new GPT-3.5-Turbo model can now accept a series of messages as input, 
-unlike the previous version that only allowed a single text prompt. 
-This capability unlocks some interesting features, 
-such as the ability to store prior responses or query with a predefined set of instructions with context. 
-*/
-// Import dependencies
-//const fetch = require('node-fetch');
-const { Configuration, OpenAIApi } = require('openai');
-const dotenv = require('dotenv');
+const { openAICompletion, openAIChatCompletion } = require('./openai_client'); // Import the searchBook function from book_search.js
 
-// Load environment variables
-dotenv.config();
-
-// Set up the OpenAI API client
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
 
 async function openlibary_search(bookName, author){
   // Fetch book information results from Open Library API
@@ -46,7 +29,11 @@ async function openlibary_search(bookName, author){
   //const olid = book.key.replace('/works/', '');
 }
 
+
+
 // Function to search for books
+// step 1: ask ChatGPT give book recommendations base on userInput
+// step 2: call openlibaray API to get book details (for example, cover image)
 async function searchBook(userInput) {
   
     const responseRequirement = `First search if there is any book whose title contains the user input. If yes, find ALL books in the same series, along with a description for each book (Please return complete list of books in the same series in the order they were published).
@@ -55,35 +42,25 @@ If the user input contain a typo, please do your best to guess the correct searc
 Return the results in the following format: Each book is on one line, and each line has the 3 fields: book name, book author, and a reason why each book is recommended or book description. Each field is separated by '$', like this: Book name $ Book author $ A reason why each book is recommended or book description.`;
     
     //const prompt = `You are an expert in books. Generate books recommendations based on the user's input: "${userInput}". ${responseRequirement}`;
-    
+    //const responseString = openAICompletion("text-davinci-003", prompt, 256, 0.5);
+
     const responseFormat = `Please provide the recommendations in the following format: Each book should be on one line, and each line should only include three fields separated by '$': the book name, the book author, and a reason why each book is recommended, like this: Book name $ Book author $ A reason why this book is recommended. Please make sure not to include a number bullet in front of the book name.`;
     
     const GPT35TurboMessage = [
       { 
         role: "user", 
-        content: `You are an expert in books. Generate book recommendations based on user input. ${responseFormat}`,
+        content: `You are an expert in books. You love to give book recommendations based on their needs. ${responseFormat}`,
       },
       { 
         role: "user", 
         content: `Generate books recommendations based on the user input: "${userInput}". ${responseFormat}`, 
       },
     ];
-    console.log(`Send request to ChatGPT API...`);
-    const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: GPT35TurboMessage,
-        max_tokens: 3796, //300 token in the prompt, maximum is 8192 for this model
-        temperature: 0.4,
-      });
-
-      console.log(completion.data);
-    const responseString = completion.data.choices[0].message.content.trim();
+    const responseString = await openAIChatCompletion("gpt-3.5-turbo", GPT35TurboMessage, 3796, 0.4);
     // Split the response by line breaks
-    //const responseLines = responseString.split('\n');
     const responseLines = responseString.split(/\r?\n/).filter(line => line.trim() !== '');//remove empty lines
-    //console.log(responseLines);
     // Process each line to extract book names and authors
-    console.log(`ChatGPT API returned! Start processing list of books...`);
+    console.log(`Start processing list of books return from ChatGPT...`);
     const bookPromises = responseLines.map(async (line) => {
       try {
         // Split the line by the delimiter to extract book name and author
@@ -93,7 +70,6 @@ Return the results in the following format: Each book is on one line, and each l
           const name = book[0].trim();
           const author = book[1].trim();
           const coverID = await openlibary_search(name, author); 
-          //`https://covers.openlibrary.org/b/id/${coverID}-M.jpg`
           const description = book[2].trim();
           
           console.log(`Name: ${name}, Author: ${author}, ID: ${coverID}`);
@@ -105,11 +81,7 @@ Return the results in the following format: Each book is on one line, and each l
             coverUrl = `https://covers.openlibrary.org/b/id/${coverID}-M.jpg`;
           }
           return {name: name, author: author, coverUrl: coverUrl, description: description};
-        } else {
-          // incomplete or malformed line
-          //console.error('Incomplete or malformed line from OpenAI API:', book.length);
-          //return null;
-        }
+        } 
       } catch (error) {
         console.error('Failed to process in searchBook module:', error);
         return null;
