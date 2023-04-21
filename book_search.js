@@ -75,6 +75,8 @@ Return the results in the following format: Each book is on one line, and each l
         max_tokens: 3796, //300 token in the prompt, maximum is 8192 for this model
         temperature: 0.4,
       });
+
+      console.log(completion.data);
     const responseString = completion.data.choices[0].message.content.trim();
     // Split the response by line breaks
     //const responseLines = responseString.split('\n');
